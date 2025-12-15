@@ -17,7 +17,7 @@ async function getInput(question){
     const input = await rl.question(question);
     rl.close()
 
-    return input.trim() ? input : "default"
+    return input.trim() ? input.toString() : "default"
     
 }
 
@@ -31,18 +31,28 @@ async function makeFiles(){
         
         const defaultDir = path.join(os.homedir(), 'Desktop', folderName);
 
-        const directoryInput = await getInput("Where do you want to create the project? (default: Desktop): ");
-        const contentInput = await getInput("Populate with default content?: ");
+        let directoryInput = await getInput("Where do you want to create the project? (default : Desktop): ");
+                        
+        let contentInput;
+
+        do{
+            contentInput = await getInput("Populate with default content?(\"n\" to keep empty): ");
+            if(contentInput !== "n" && contentInput !== "default"){
+                console.log("Invalid Input");
+            }
+        }while(contentInput !== "n" && contentInput !== "default")
+
+        // const projectDirectory = (directoryInput == "default") ? defaultDir : path.join(directoryInput, folderName);
 
         const htmlContent = (contentInput == "default") ? defaultHTML : '';
         const cssContent = (contentInput == "default") ? defaultCSS : '';
         const jsContent = (contentInput == "default") ? defaultJS : '';
 
         await Promise.all([
-            await fs.mkdir(path.join(os.homedir(), 'Desktop', folderName), {recursive : true}),
-            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.HTML)), htmlContent),
-            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.CSS)), cssContent),
-            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.JAVASCRIPT)), jsContent)
+            await fs.mkdir(defaultDir, {recursive : true}),
+            await fs.writeFile((path.join(defaultDir, fileNames.HTML)), htmlContent),
+            await fs.writeFile((path.join(defaultDir, fileNames.CSS)), cssContent),
+            await fs.writeFile((path.join(defaultDir, fileNames.JAVASCRIPT)), jsContent)
         ]);    
         
 
