@@ -1,39 +1,26 @@
 const fs = require("fs/promises");
 const readLine = require("readline/promises");
 const path = require('path');
-const {fileNames, folderName} = require("./default/defaultSettings.cjs");
 const os = require('os');
 
-console.log(fileNames);
-console.log(folderName);
-// const path = require('path')
+const {fileNames, folderName} = require("./default/defaultSettings.cjs");
 
-// console.log(path.join(userInfo().homedir, 'Desktop'));
 
-// console.log(os.uptime() % (60 * 60));
 
-// console.log(path.join(__dirname, "gg.txt"));
+async function getInput(question){
+    
+    const rl = readLine.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
 
-// console.log(path.resolve('.cjs'));
+    const input = await rl.question(question);
+    rl.close()
 
-// console.log(path.resolve("Desktop"));
-
-function askInput(question){
-    return new Promise((resolve, reject) => {
-        const rl = readLine.createInterface({
-            input : process.stdin,
-            output : process.stderr
-        });
-
-        rl.question(question, (value) => {
-            if(!value.trim()){
-                resolve("default");
-            }
-
-            resolve(value);
-        });
-    })
+    return input.trim() ? input : "default"
+    
 }
+
 
 async function makeFiles(){
 
@@ -42,11 +29,20 @@ async function makeFiles(){
         const defaultCSS = await fs.readFile("./default/fileContents/default.css");
         const defaultJS = await fs.readFile("./default/fileContents/default.js");
         
+        const defaultDir = path.join(os.homedir(), 'Desktop', folderName);
+
+        const directoryInput = await getInput("Where do you want to create the project? (default: Desktop): ");
+        const contentInput = await getInput("Populate with default content?: ");
+
+        const htmlContent = (contentInput == "default") ? defaultHTML : '';
+        const cssContent = (contentInput == "default") ? defaultCSS : '';
+        const jsContent = (contentInput == "default") ? defaultJS : '';
+
         await Promise.all([
             await fs.mkdir(path.join(os.homedir(), 'Desktop', folderName), {recursive : true}),
-            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.HTML)), defaultHTML),
-            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.CSS)), defaultCSS),
-            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.JAVASCRIPT)), defaultJS)
+            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.HTML)), htmlContent),
+            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.CSS)), cssContent),
+            await fs.writeFile((path.join(os.homedir(), 'Desktop', folderName, fileNames.JAVASCRIPT)), jsContent)
         ]);    
         
 
