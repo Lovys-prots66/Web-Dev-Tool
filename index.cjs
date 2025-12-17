@@ -31,12 +31,12 @@ async function makeFiles(){
         
         const defaultDir = path.join(os.homedir(), 'Desktop', folderName);
 
-        let directoryInput = await getInput("Where do you want to create the project? (default : Desktop): ");
+        let directoryInput = await getInput("Where do you want to create the project? (default : Desktop):\n--> ");
                         
         let contentInput;
 
         do{
-            contentInput = await getInput("Populate with default content?(\"n\" to keep empty): ");
+            contentInput = await getInput("Populate with default content?(\"n\" to keep empty):\n--> ");
             if(contentInput !== "n" && contentInput !== "default"){
                 console.log("Invalid Input");
             }
