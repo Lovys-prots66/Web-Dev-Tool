@@ -29,7 +29,8 @@ async function makeFiles(){
         const defaultCSS = await fs.readFile("./default/fileContents/default.css");
         const defaultJS = await fs.readFile("./default/fileContents/default.js");
         
-        const defaultDir = path.join(os.homedir(), 'Desktop', folderName);
+
+        let nameInput = await getInput("Project name? (default : \"Project\"):\n--> ");
 
         let directoryInput = await getInput("Where do you want to create the project? (default : Desktop):\n--> ");
                         
@@ -43,6 +44,11 @@ async function makeFiles(){
         }while(contentInput !== "n" && contentInput !== "default")
 
         // const projectDirectory = (directoryInput == "default") ? defaultDir : path.join(directoryInput, folderName);
+
+        const projectName = (nameInput === "default") ? folderName : nameInput;
+
+        const defaultDir = path.join(os.homedir(), 'Desktop', projectName);
+
 
         const htmlContent = (contentInput == "default") ? defaultHTML : '';
         const cssContent = (contentInput == "default") ? defaultCSS : '';
