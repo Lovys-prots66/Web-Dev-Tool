@@ -16,7 +16,7 @@ async function dirExists(dir){
             return true;
         }
     }catch(err){
-        return true;
+        return false;
     }
 } 
 
@@ -47,6 +47,7 @@ async function makeFiles(){
 
         // project's name
         let nameInput;
+        let projectName;
         let projectPath;
 
         do{
@@ -55,7 +56,9 @@ async function makeFiles(){
             
             const baseDir = (directoryInput == "default") ? path.join(os.homedir(), 'Desktop') : directoryInput;
 
-            projectPath = path.join(baseDir, nameInput);
+            projectName = (nameInput == "default") ? "Project" : nameInput;
+
+            projectPath = path.join(baseDir, projectName);
 
             if(await dirExists(projectPath)){
                 console.log(`Project ${projectPath} already exists.`);
@@ -63,8 +66,6 @@ async function makeFiles(){
             
         }while(await dirExists(projectPath))
             
-
-        
         
         do{
             contentInput = await getInput("Populate with default content? (\"n\" to keep empty):\n--> ");
