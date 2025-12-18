@@ -53,7 +53,7 @@ async function makeFiles(){
             
             nameInput = await getInput("Project name? (default : \"Project\"):\n--> ");
             
-            const baseDir = (directoryInput === "default") ? path.join(os.homedir(), 'Desktop') : directoryInput;
+            const baseDir = (directoryInput == "default") ? path.join(os.homedir(), 'Desktop') : directoryInput;
 
             projectPath = path.join(baseDir, nameInput);
 
@@ -73,9 +73,7 @@ async function makeFiles(){
             }
 
         }while(contentInput !== "n" && contentInput !== "default")
-            
-            // const projectDirectory = (directoryInput == "default") ? defaultDir : path.join(directoryInput, folderName);
-       
+               
         // get default content
         const defaultHTML = await fs.readFile("./default/fileContents/default.html");
         const defaultCSS = await fs.readFile("./default/fileContents/default.css");
