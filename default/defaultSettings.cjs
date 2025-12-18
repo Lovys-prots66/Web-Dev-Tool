@@ -4,6 +4,6 @@ const fileNames = {
     JAVASCRIPT : "script.js" 
 }
 
-const folderName = "project";
+const folderName = "Project";
 
 module.exports = {fileNames, folderName}
