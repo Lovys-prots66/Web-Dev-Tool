@@ -1,46 +1,17 @@
+#!/usr/bin/env node
+
 const fs = require("fs/promises");
-const readLine = require("readline/promises");
 const path = require('path');
 const os = require('os');
 
+const getInput = require("./utils/getInput.cjs");
+const dirExists = require("./utils/dirExists.cjs");
+
 const {fileNames, folderName} = require("./default/defaultSettings.cjs");
-
-// function for checking the existence of a directory
-async function dirExists(dir){
-
-    try{
-        const stat = await fs.stat(dir);
-
-        if(stat.isDirectory()){
-            console.log("Project already exists");
-            return true;
-        }
-    }catch(err){
-        return false;
-    }
-} 
-
-// functions for requesting and getting user input
-async function getInput(question){
-    
-    const rl = readLine.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    const input = await rl.question(question);
-    rl.close()
-
-    // resort to default value if no input
-    return input.trim() ? input.toString() : "default"
-    
-}
-
 
 async function makeFiles(){
 
     try{
-        
         
         // request project dir        
         let directoryInput = await getInput("Where do you want to create the project? (default : Desktop):\n--> ");
