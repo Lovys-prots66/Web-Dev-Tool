@@ -69,6 +69,7 @@ async function makeFiles(){
             await fs.writeFile((path.join(projectPath, fileNames.JAVASCRIPT)), jsContent)
         ]);    
         
+        console.log(`\nProject created at ${projectPath}`);
 
     }catch(err){
         console.error(err.message);
